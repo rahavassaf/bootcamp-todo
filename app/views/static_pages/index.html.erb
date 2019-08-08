@@ -1,9 +1,26 @@
+<script>
+$(function() {
+	$.get('/tasks', function (data) {
+		var html = '';
+
+		for(var d of data){
+			html += `<li><div class="view"><input type="checkbox" class="toggle" ${d.done ? 'checked' : ''}></input>` + 
+			`<label>${d.title}</label> ${new Date(d.created_at).toLocaleDateString('en-US')}</div></li>`;
+		}
+
+		$('.todo-list').html(html);
+	});
+});
+</script>
+
+
 <section class="todoapp">
   <header class="header">
     <h1>todos</h1>
   </header>
 
   <section class="main">
-
+  	<ul class="todo-list">
+  	</ul>
   </section>
 </section>
