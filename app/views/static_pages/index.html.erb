@@ -1,16 +1,19 @@
 <script>
 	$(function() {
 		$.get('/tasks').success(function(data) {
-			$('.todo-list').html(data.map(d =>
-				`<li><div class="view"><input type="checkbox" class="toggle" ${d.done ? 'checked' : ''} data-id="${d.id}"></input>` + 
-				`<label>${d.title}</label> ${new Date(d.created_at).toLocaleDateString('en-US')}</div></li>`
-			).join("\n") );
+
+			// convert an object representing a task and convert it to html
+			function liToHTML(li) {
+				return `<li><div class="view">` +
+				`<input type="checkbox" class="toggle" ${li.done ? 'checked' : ''} data-id="${li.id}"></input>` +
+				`<label>${li.title}</label> ${new Date(li.created_at).toLocaleDateString('en-US')}` +
+				`</div></li>`
+			}
+
+			$('.todo-list').html(data.map(liToHTML).join("\n") );
 
 			$('.toggle').change(function(e) {
-				var id = $(e.target).data('id');
-				console.log([e.target.checked, !e.target.checked]);
-
-				$.post('/tasks/' + id, {
+				$.post('/tasks/' + $(e.target).data('id'), {
 						_method: "PUT",
 						task: {done: e.target.checked}
 				});

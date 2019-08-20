@@ -11,6 +11,23 @@ RSpec.describe TasksController, type: :controller do
 			response_value = ActiveSupport::JSON.decode(@response.body)
 			expect(response_value.count).to eq(2)
 		end
+
+		it "should list the tasks in a consistent order" do
+			task1 = FactoryBot.create(:task)
+			task2 = FactoryBot.create(:task)
+			
+			get :index
+			expect(response).to have_http_status :success
+			response_ids = ActiveSupport::JSON.decode(@response.body).pluck('id')
+			expect(response_ids).to eq([task1.id, task2.id])
+
+			task2.update_attributes(title: 'something else')
+
+			get :index
+			expect(response).to have_http_status :success
+			response_ids = ActiveSupport::JSON.decode(@response.body).pluck('id')
+			expect(response_ids).to eq([task1.id, task2.id])
+		end
 	end
 
 	describe 'task#update' do
