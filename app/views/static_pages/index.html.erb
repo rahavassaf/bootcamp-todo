@@ -1,16 +1,22 @@
 <script>
-$(function() {
-	$.get('/tasks', function (data) {
-		var html = '';
+	$(function() {
+		$.get('/tasks').success(function(data) {
+			$('.todo-list').html(data.map(d =>
+				`<li><div class="view"><input type="checkbox" class="toggle" ${d.done ? 'checked' : ''} data-id="${d.id}"></input>` + 
+				`<label>${d.title}</label> ${new Date(d.created_at).toLocaleDateString('en-US')}</div></li>`
+			).join("\n") );
 
-		for(var d of data){
-			html += `<li><div class="view"><input type="checkbox" class="toggle" ${d.done ? 'checked' : ''}></input>` + 
-			`<label>${d.title}</label> ${new Date(d.created_at).toLocaleDateString('en-US')}</div></li>`;
-		}
+			$('.toggle').change(function(e) {
+				var id = $(e.target).data('id');
+				console.log([e.target.checked, !e.target.checked]);
 
-		$('.todo-list').html(html);
+				$.post('/tasks/' + id, {
+						_method: "PUT",
+						task: {done: e.target.checked}
+				});
+      		});
+		});
 	});
-});
 </script>
 
 
