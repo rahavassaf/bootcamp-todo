@@ -19,6 +19,16 @@ class TasksController < ApplicationController
 		end
 	end
 
+	def create
+		task = Task.create(task_params)
+
+		if task.invalid?
+			render plain: 'Unprocessable', status: :unprocessable_entity
+		else
+			render json: task
+		end
+	end
+
 	private
 
 	def task_params
