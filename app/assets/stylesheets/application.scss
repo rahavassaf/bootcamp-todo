@@ -22,6 +22,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  background: image_url('diagonal_striped_brick');
 }
 
 button {
@@ -73,19 +74,19 @@ input[type="checkbox"] {
 .todoapp input::-webkit-input-placeholder {
   font-style: italic;
   font-weight: 300;
-  color: #e6e6e6;
+  color: #79797a;
 }
 
 .todoapp input::-moz-placeholder {
   font-style: italic;
   font-weight: 300;
-  color: #e6e6e6;
+  color: #79797a;
 }
 
 .todoapp input::input-placeholder {
   font-style: italic;
   font-weight: 300;
-  color: #e6e6e6;
+  color: #79797a;
 }
 
 .todoapp h1 {
@@ -95,10 +96,11 @@ input[type="checkbox"] {
   font-size: 100px;
   font-weight: 100;
   text-align: center;
-  color: rgba(175, 47, 47, 0.15);
+  color: rgba(72, 142, 204, 0.7);
   -webkit-text-rendering: optimizeLegibility;
   -moz-text-rendering: optimizeLegibility;
   text-rendering: optimizeLegibility;
+  text-shadow: 3px 3px 3px #555;
 }
 
 .new-todo,
@@ -124,7 +126,7 @@ input[type="checkbox"] {
 .new-todo {
   padding: 16px 16px 16px 60px;
   border: none;
-  background: rgba(0, 0, 0, 0.003);
+  background: rgba(72, 142, 204, 0.25);
   box-shadow: inset 0 -2px 1px rgba(0,0,0,0.03);
 }
 
@@ -187,8 +189,12 @@ label[for='toggle-all'] {
   margin: 0 0 0 43px;
 }
 
-.todo-list li.editing .view {
+.todo-list li.editing {
   display: none;
+}
+
+.view {
+	display: inline-block;
 }
 
 .todo-list li .toggle {
@@ -395,9 +401,19 @@ html .clear-completed:active {
 
 .author {
 	text-align: center;
-	margin-bottom: 20px;
+	padding: 20px;
+	background: rgba(72, 142, 204, 0.3);
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+              0 25px 50px 0 rgba(0, 0, 0, 0.1);
+    width: 510px;
+    margin-bottom: 40px;
 
 	a {
-		color: #b83f45;
+		color: #488ecc;
 	}
+}
+
+.created_date {
+	font-size: 12px;
+	display: inline-block;
 }

@@ -3,7 +3,7 @@ $(function() {
   function liToHTML(li) {
     return `<li ${li.done ? 'class="completed"' : ''} id="listItem-${li.id}"><div class="view">` +
     `<input type="checkbox" class="toggle" ${li.done ? 'checked' : ''} data-id="${li.id}"></input>` +
-    `<label>${li.title}</label> ${new Date(li.created_at).toLocaleDateString('en-US')}` +
+    `<label>${li.title} <a class="created_date"> : ${new Date(li.created_at).toLocaleDateString('en-US')}</a></label>` +
     `</div></li>`
   }
 
@@ -27,7 +27,6 @@ $(function() {
 
   $('#new-form').submit(function(e) {
     e.preventDefault();
-    console.log('intercepted');
 
     var textbox = $('#new-form .new-todo');
 
@@ -38,6 +37,8 @@ $(function() {
       $('.todo-list').append(liToHTML(e));
       textbox.val('');
       registerClick();
+    }).fail(function(e) {
+      textbox.effect('shake');
     });
   });
 });

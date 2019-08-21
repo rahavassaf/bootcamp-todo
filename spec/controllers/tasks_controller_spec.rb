@@ -68,6 +68,35 @@ RSpec.describe TasksController, type: :controller do
 		end
 
 		it "should reject invalid tasks" do
+			task = FactoryBot.create(:task, {title: 'Valid title'})
+
+			put :update, params: {id: task.id, task: {title: '#'*2}}
+			expect(response).to have_http_status :unprocessable_entity
+			
+			task.reload
+			expect(task.title).to eq('Valid title')
+
+			put :update, params: {id: task.id, task: {title: '#'*101}}
+			expect(response).to have_http_status :unprocessable_entity
+			
+			task.reload
+			expect(task.title).to eq('Valid title')
+		end
+
+		it "should accept valid tasks" do
+			task = FactoryBot.create(:task)
+
+			put :update, params: {id: task.id, task: {title: '#'*3}}
+			expect(response).to have_http_status :success
+			
+			task.reload
+			expect(task.title).to eq('#'*3)
+
+			put :update, params: {id: task.id, task: {title: '#'*100}}
+			expect(response).to have_http_status :success
+			
+			task.reload
+			expect(task.title).to eq('#'*100)
 		end
 	end
 
@@ -86,6 +115,23 @@ RSpec.describe TasksController, type: :controller do
 		end
 
 		it "should reject invalid tasks" do
+			post :create, params: {task: {title: '#'*2}}
+			expect(response).to have_http_status :unprocessable_entity
+
+			post :create, params: {task: {title: '#'*101}}
+			expect(response).to have_http_status :unprocessable_entity
+
+			expect(Task.all.length).to eq(0)
+		end
+
+		it "should accept valid tasks" do
+			post :create, params: {task: {title: '#'*3}}
+			expect(response).to have_http_status :success
+
+			post :create, params: {task: {title: '#'*100}}
+			expect(response).to have_http_status :success
+
+			expect(Task.all.length).to eq(2)
 		end
 	end
 end
