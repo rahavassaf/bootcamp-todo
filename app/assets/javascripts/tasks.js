@@ -2,7 +2,7 @@ $(function() {
   // convert an object representing a task and convert it to html
   function liToHTML(li) {
     return '<li ' + (li.done ? 'class="completed"' : '') + 'id="listItem-' + li.id + '"><div class="view">' +
-    '<input type="checkbox" class="toggle" '+ (li.done ? 'checked' : '') + 'data-id="' + li.id + '"></input>' +
+    '<input type="checkbox" class="toggle" '+ (li.done ? 'checked' : '') + ' data-id="' + li.id + '"></input>' +
     '<label>' + li.title + '<a class="created_date"> : ' + (new Date(li.created_at).toLocaleDateString('en-US')) +'</a></label>' +
     '</div></li>'
   }

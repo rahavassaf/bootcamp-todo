@@ -417,3 +417,20 @@ html .clear-completed:active {
 	font-size: 12px;
 	display: inline-block;
 }
+
+#user-console {
+	position: fixed;
+	padding: 20px;
+	bottom: 20px;
+	right: 20px;
+	width: 200px;
+	height: 40px;
+	background: rgba(72, 142, 204, 0.3);
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
+              0 25px 50px 0 rgba(0, 0, 0, 0.1);
+
+
+    a {
+		color: #488ecc;
+	}
+}

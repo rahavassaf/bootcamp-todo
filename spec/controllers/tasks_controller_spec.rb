@@ -3,8 +3,11 @@ require 'rails_helper'
 RSpec.describe TasksController, type: :controller do
 	describe 'tasks#index' do
 		it "should list the tasks in the database" do
-			task1 = FactoryBot.create(:task)
-			task2 = FactoryBot.create(:task)
+			user = FactoryBot.create(:user)
+			sign_in user
+
+			task1 = FactoryBot.create(:task, {user: user})
+			task2 = FactoryBot.create(:task, {user: user})
 			get :index
 
 			expect(response).to have_http_status :success
@@ -13,8 +16,11 @@ RSpec.describe TasksController, type: :controller do
 		end
 
 		it "should list the tasks in a consistent order" do
-			task1 = FactoryBot.create(:task)
-			task2 = FactoryBot.create(:task)
+			user = FactoryBot.create(:user)
+			sign_in user
+
+			task1 = FactoryBot.create(:task, {user: user})
+			task2 = FactoryBot.create(:task, {user: user})
 			
 			get :index
 			expect(response).to have_http_status :success
@@ -28,11 +34,19 @@ RSpec.describe TasksController, type: :controller do
 			response_ids = ActiveSupport::JSON.decode(@response.body).pluck('id')
 			expect(response_ids).to eq([task1.id, task2.id])
 		end
+
+		it "should require the user be signed in" do
+			get :index
+			expect(response).to redirect_to new_user_session_path
+		end
 	end
 
 	describe 'task#update' do
 		it "should allow tasks to be marked as done" do
-			task = FactoryBot.create(:task)
+			user = FactoryBot.create(:user)
+			sign_in user
+
+			task = FactoryBot.create(:task, {user: user})
 
 			expect(task.done).to eq(false)
 
@@ -44,7 +58,10 @@ RSpec.describe TasksController, type: :controller do
 		end
 
 		it "should allow tasks to be marked as not-done" do
-			task = FactoryBot.create(:task, {done: true})
+			user = FactoryBot.create(:user)
+			sign_in user
+
+			task = FactoryBot.create(:task, {done: true, user: user})
 
 			expect(task.done).to eq(true)
 
@@ -55,20 +72,38 @@ RSpec.describe TasksController, type: :controller do
 			expect(task.done).to eq(false)
 		end
 
-		it "should require the a user be signed-in" do
+		it "should require the user be signed-in" do
+			user = FactoryBot.create(:user)
+			task = FactoryBot.create(:task, {user: user})
+			put :update, params: {id: task.id, task: {done: false}}
+			expect(response).to redirect_to new_user_session_path
 		end
 
-		it "should require the a user own the task" do
+		it "should require the user own the task" do
+			user1 = FactoryBot.create(:user)
+			task = FactoryBot.create(:task, {user: user1})
+
+			user2 = FactoryBot.create(:user)
+			sign_in user2
+
+			put :update, params: {id: task.id, task: {done: false}}
+			expect(response).to have_http_status :unauthorized
 		end
 
 		it "should return 404 for non-existent task" do
+			user = FactoryBot.create(:user)
+			sign_in user
+
 			put :update, params: {id: 0, task: {done: true}}
 
 			expect(response).to have_http_status :not_found
 		end
 
 		it "should reject invalid tasks" do
-			task = FactoryBot.create(:task, {title: 'Valid title'})
+			user = FactoryBot.create(:user)
+			sign_in user
+
+			task = FactoryBot.create(:task, {title: 'Valid title', user: user})
 
 			put :update, params: {id: task.id, task: {title: '#'*2}}
 			expect(response).to have_http_status :unprocessable_entity
@@ -84,7 +119,10 @@ RSpec.describe TasksController, type: :controller do
 		end
 
 		it "should accept valid tasks" do
-			task = FactoryBot.create(:task)
+			user = FactoryBot.create(:user)
+			sign_in user
+
+			task = FactoryBot.create(:task, {user: user})
 
 			put :update, params: {id: task.id, task: {title: '#'*3}}
 			expect(response).to have_http_status :success
@@ -102,6 +140,9 @@ RSpec.describe TasksController, type: :controller do
 
 	describe 'task#create' do
 		it "should allow new tasks to be created" do
+			user = FactoryBot.create(:user)
+			sign_in user
+
 			post :create, params: {task: {title: 'Fix things'}}
 			expect(response).to have_http_status :success
 
@@ -111,10 +152,15 @@ RSpec.describe TasksController, type: :controller do
 			expect(Task.last.title).to eq('Fix things')
 		end
 
-		it "should require the a user be signed-in" do
+		it "should require the user be signed-in" do
+			post :create, params: {task: {title: 'Fix things'}}
+			expect(response).to redirect_to new_user_session_path
 		end
 
 		it "should reject invalid tasks" do
+			user = FactoryBot.create(:user)
+			sign_in user
+
 			post :create, params: {task: {title: '#'*2}}
 			expect(response).to have_http_status :unprocessable_entity
 
@@ -125,6 +171,9 @@ RSpec.describe TasksController, type: :controller do
 		end
 
 		it "should accept valid tasks" do
+			user = FactoryBot.create(:user)
+			sign_in user
+
 			post :create, params: {task: {title: '#'*3}}
 			expect(response).to have_http_status :success
 
