@@ -14,6 +14,9 @@
  *= require_self
  */
 
+
+@import url('https://fonts.googleapis.com/css?family=Monda:700&display=swap');
+
 .todo-list {
 	 list-style-type: none;
 }
@@ -22,7 +25,8 @@ html,
 body {
   margin: 0;
   padding: 0;
-  background: image_url('diagonal_striped_brick');
+  background: image_url('white_leather');
+  background-attachment: fixed;
 }
 
 button {
@@ -94,9 +98,10 @@ input[type="checkbox"] {
   top: -155px;
   width: 100%;
   font-size: 100px;
-  font-weight: 100;
+  font-weight: 700;
+  font-family: 'Monda', sans-serif;
   text-align: center;
-  color: rgba(72, 142, 204, 0.7);
+  color: rgba(72, 142, 204, 0.5);
   -webkit-text-rendering: optimizeLegibility;
   -moz-text-rendering: optimizeLegibility;
   text-rendering: optimizeLegibility;
@@ -169,7 +174,7 @@ label[for='toggle-all'] {
 
 .todo-list li {
   position: relative;
-  font-size: 24px;
+  font-size: 18px;
   border-bottom: 1px solid #ededed;
 }
 
@@ -400,13 +405,14 @@ html .clear-completed:active {
 }
 
 .author {
-	text-align: center;
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
 	padding: 20px;
 	background: rgba(72, 142, 204, 0.3);
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
               0 25px 50px 0 rgba(0, 0, 0, 0.1);
-    width: 510px;
-    margin-bottom: 40px;
+    width: 200px;
 
 	a {
 		color: #488ecc;
@@ -416,12 +422,13 @@ html .clear-completed:active {
 .created_date {
 	font-size: 12px;
 	display: inline-block;
+	margin-left: 10px;
 }
 
 #user-console {
 	position: fixed;
 	padding: 20px;
-	bottom: 20px;
+	bottom: 120px;
 	right: 20px;
 	width: 200px;
 	height: 40px;

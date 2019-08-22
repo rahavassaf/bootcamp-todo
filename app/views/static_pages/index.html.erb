@@ -2,9 +2,11 @@
   <header class="header">
     <h1>todos</h1>
 
-    <form id="new-form">
-      <input type="text" class="new-todo" placeholder="What to do?" />
-    </form>
+    <% if user_signed_in? %>
+	    <form id="new-form">
+	      <input type="text" class="new-todo" placeholder="What to do?" />
+	    </form>
+    <% end %>
   </header>
 
   <section class="main">
@@ -14,7 +16,6 @@
 </section>
 
 <section class="author">
-  A <%= link_to "todo-mvc", "http://todomvc.com", target: :new %>
-  application, built by
-  <%= link_to "Ken Mazaika", "http://github.com/kenmazaika", target: :new %>
+  A <%= link_to "todo-mvc", "http://todomvc.com", target: :new %> application, <br>
+  built by <%= link_to "Ken Mazaika", "http://github.com/kenmazaika", target: :new %>
 </section>
