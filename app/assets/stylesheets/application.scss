@@ -105,7 +105,7 @@ input[type="checkbox"] {
   -webkit-text-rendering: optimizeLegibility;
   -moz-text-rendering: optimizeLegibility;
   text-rendering: optimizeLegibility;
-  text-shadow: 3px 3px 3px #555;
+  text-shadow: 3px 3px 3px #888;
 }
 
 .new-todo,
@@ -212,8 +212,6 @@ label[for='toggle-all'] {
   bottom: 0;
   margin: auto 0;
   border: none; /* Mobile Safari */
-  -webkit-appearance: none;
-  appearance: none;
 }
 
 .todo-list li .toggle:after {
@@ -413,6 +411,8 @@ html .clear-completed:active {
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
               0 25px 50px 0 rgba(0, 0, 0, 0.1);
     width: 200px;
+    height: 40px;
+    border-radius: 5px;
 
 	a {
 		color: #488ecc;
@@ -432,6 +432,7 @@ html .clear-completed:active {
 	right: 20px;
 	width: 200px;
 	height: 40px;
+	border-radius: 5px;
 	background: rgba(72, 142, 204, 0.3);
 	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2),
               0 25px 50px 0 rgba(0, 0, 0, 0.1);
